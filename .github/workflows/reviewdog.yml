@@ -282,6 +282,7 @@ jobs:
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SAVE_SUPER_LINTER_OUTPUT: true
+          LOG_LEVEL: DEBUG
       - name: Check output
         if: always()
         run: |
