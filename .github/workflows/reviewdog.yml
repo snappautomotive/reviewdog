@@ -1,8 +1,8 @@
 name: reviewdog
 on:
   push:
-    branches:
-      - master
+    # branches:
+    #   - master
   pull_request:
 
 jobs:
@@ -262,6 +262,29 @@ jobs:
           golint ./... | reviewdog -f=golint -reporter=sarif |
             tee ../results/golint.sarif
       - uses: github/codeql-action/upload-sarif@v3
+
+  build:
+    name: Super linter
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+      - uses: super-linter/super-linter@v6.6.0
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SAVE_SUPER_LINTER_OUTPUT: true
+      - name: Check output
+        run: |
+          ls ./super-linter-output
 
   typos:
     name: runner / typos
