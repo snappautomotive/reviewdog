@@ -283,6 +283,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SAVE_SUPER_LINTER_OUTPUT: true
       - name: Check output
+        if: always()
         run: |
           ls ./super-linter-output
 
